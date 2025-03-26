@@ -5,13 +5,18 @@ import { Search, Filter } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const { data: session } = useSession();
+  const router = useRouter();
   const [loans, setLoans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (session?.user?.role !== "user") {
+      router.replace("/home");
+    }
     async function fetchLoans() {
       if (!session?.user?.id) return;
 
