@@ -3,6 +3,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## Demo Video
 [![Watch Demo](https://img.shields.io/badge/▶-Watch_Demo-blue?style=for-the-badge)](https://drive.google.com/file/d/149TsMhbbvxU19anYYG0gOVBDvzE8DuLV/view)
 
+
+Test Credentials
+1. Admin Account
+🔹 Email: admin@gmail.com
+🔹 Password: admin123
+
+2. Verifier Account
+🔹 Email: verifier@gmail.com
+🔹 Password: verifier123
+
+3. User Account(you can signup and login)
+🔹 Email: user1@gmail.com
+🔹 Password: 123456
+
 ## Getting Started
 
 First, run the development servers:
