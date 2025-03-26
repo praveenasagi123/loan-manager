@@ -12,7 +12,7 @@ export async function PUT(
 
     const updatedLoan = await LoanModel.findByIdAndUpdate(
       loanId,
-      { status: "verified" },
+      { status: "approved" },
       { new: true }
     );
 

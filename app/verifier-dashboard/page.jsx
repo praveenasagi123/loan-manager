@@ -1,8 +1,8 @@
 "use client";
 
 import Sidebar from "./Sidebar";
-import Stats from "./Stats";
 import Loans from "./Loans";
+import Stats from "@/app/components/Stats";
 
 export default function Dashboard() {
   return (

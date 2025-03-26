@@ -2,8 +2,10 @@
 
 import mongoose from "mongoose";
 
-const MONGODB_URI =
-  "mongodb+srv://akchoudhary2411:loan_manager_123@cluster0.efcsa.mongodb.net/";
+const MONGODB_URI = process.env.MONGODB_URI!;
+console.log(MONGODB_URI);
+
+// "mongodb+srv://akchoudhary2411:loan_manager_123@cluster0.efcsa.mongodb.net/";
 
 if (!MONGODB_URI) {
   throw new Error("Please define MONGODB_URI in your .env file");

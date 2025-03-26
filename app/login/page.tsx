@@ -10,16 +10,17 @@ export default function Login() {
   const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<"user" | "admin" | "verifier">("user");
   const router = useRouter();
   const { showNotification } = useNotification();
-  console.log(session);
 
   useEffect(() => {
     if (status === "authenticated") {
       if (session.user.role === "admin") {
         router.replace("/adminDashboard");
-      }
-      if (session.user.role === "user") {
+      } else if (session.user.role === "verifier") {
+        router.replace("/verifierDashboard");
+      } else {
         router.replace("/dashboard");
       }
     }
@@ -37,7 +38,10 @@ export default function Login() {
       showNotification(result.error, "error");
     } else {
       showNotification("Login successful!", "success");
-      router.push("/dashboard");
+
+      if (role === "admin") router.push("/adminDashboard");
+      else if (role === "verifier") router.push("/verifierDashboard");
+      else router.push("/dashboard");
     }
   };
 
@@ -45,8 +49,13 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h1 className="text-3xl font-bold text-gray-900 text-center mb-6">
-          Welcome Back
+          {role === "admin"
+            ? "Admin Login"
+            : role === "verifier"
+            ? "Verifier Login"
+            : "User Login"}
         </h1>
+
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label
@@ -82,27 +91,46 @@ export default function Login() {
               placeholder="Enter your password"
             />
           </div>
+
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
             Sign In
           </button>
-          <button
-            type="submit"
-            className="w-full bg-green-800 text-white py-2 rounded-lg hover:bg-green-600 transition cursor-pointer"
-          >
-            Admin Sign In
-          </button>
-          <button
-            type="submit"
-            className="w-full bg-green-800 text-white py-2 rounded-lg hover:bg-green-600 transition cursor-pointer"
-          >
-            Verifier Sign In
-          </button>
+          <div className="flex flex-col gap-1">
+            {role !== "admin" && (
+              <button
+                type="button"
+                onClick={() => setRole("admin")}
+                className="text-blue-500 hover:underline cursor-pointer"
+              >
+                Sign In as Admin
+              </button>
+            )}
+            {role !== "verifier" && (
+              <button
+                type="button"
+                onClick={() => setRole("verifier")}
+                className="text-blue-500 hover:underline cursor-pointer"
+              >
+                Sign In as Verifier
+              </button>
+            )}
+            {role !== "user" && (
+              <button
+                type="button"
+                onClick={() => setRole("user")}
+                className="text-blue-500 hover:underline cursor-pointer"
+              >
+                Sign in as User
+              </button>
+            )}
+          </div>
         </form>
+
         <p className="text-center text-sm text-gray-600 mt-4">
-          Don&amp;t have an account?{" "}
+          Don’t have an account?{" "}
           <Link href="/register" className="text-blue-500 hover:underline">
             Sign Up
           </Link>

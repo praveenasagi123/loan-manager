@@ -8,7 +8,7 @@ export interface ILoan extends Document {
   employmentStatus: string;
   employmentAddress: string;
   reason: string;
-  status: "pending" | "approved" | "rejected" | "finding";
+  status: "pending" | "approved" | "verified";
   appliedDate: Date;
   verifiedAt?: { type: Date; default: null };
   approvedAt?: { type: Date; default: null };
@@ -24,7 +24,7 @@ const LoanSchema = new mongoose.Schema({
   reason: { type: String, required: true },
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected", "finding"],
+    enum: ["pending", "approved", "verified"],
     default: "pending",
   },
   appliedDate: { type: Date, default: Date.now },

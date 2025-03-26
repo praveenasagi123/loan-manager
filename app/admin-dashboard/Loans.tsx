@@ -27,7 +27,7 @@ export default function Loans() {
 
   const approveLoan = async (loanId: string) => {
     try {
-      const response = await fetch(`/api/loans/verify/${loanId}`, {
+      const response = await fetch(`/api/loans/approve/${loanId}`, {
         method: "PUT",
       });
 

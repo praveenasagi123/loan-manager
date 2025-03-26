@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, Banknote, Settings, LogOut } from "lucide-react";
+import { Users, Banknote, Settings } from "lucide-react";
 
 const menuItems = [
   { name: "Borrowers", icon: Users, link: "#" },
