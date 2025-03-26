@@ -7,17 +7,23 @@ import { useNotification } from "../components/Notification";
 import Link from "next/link";
 
 export default function Login() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { showNotification } = useNotification();
+  console.log(session);
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.replace("/dashboard");
+      if (session.user.role === "admin") {
+        router.replace("/adminDashboard");
+      }
+      if (session.user.role === "user") {
+        router.replace("/dashboard");
+      }
     }
-  }, [status, router]);
+  }, [status, router, session]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,7 +102,7 @@ export default function Login() {
           </button>
         </form>
         <p className="text-center text-sm text-gray-600 mt-4">
-          Don't have an account?{" "}
+          Don&amp;t have an account?{" "}
           <Link href="/register" className="text-blue-500 hover:underline">
             Sign Up
           </Link>

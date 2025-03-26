@@ -6,16 +6,24 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home({ children }: { children: React.ReactNode }) {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.replace("/dashboard");
+      if (session.user.role === "admin") {
+        router.replace("/admin-dashboard");
+      }
+      if (session.user.role === "verifier") {
+        router.replace("/verifier-dashboard");
+      }
+      if (session.user.role === "user") {
+        router.replace("/dashboard");
+      }
     } else {
       router.replace("/login");
     }
-  }, [status, router]);
+  }, [status, router, session]);
 
   return (
     <main>

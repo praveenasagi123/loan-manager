@@ -16,31 +16,30 @@ export default withAuth(
       // User-specific routes
       if (token.role === "user") {
         // Redirect users trying to access admin/verifier routes
-        if (pathname.startsWith("/admin") || pathname.startsWith("/verifier")) {
-          return NextResponse.redirect(new URL("/dashboard/loans", req.url));
-        }
-
+        // if (pathname.startsWith("/admin") || pathname.startsWith("/verifier")) {
+        //   return NextResponse.redirect(new URL("/dashboard/loans", req.url));
+        // }
         // Ensure user stays within dashboard routes
-        if (!pathname.startsWith("/dashboard")) {
-          return NextResponse.redirect(new URL("/dashboard/loans", req.url));
-        }
+        // if (!pathname.startsWith("/dashboard")) {
+        //   return NextResponse.redirect(new URL("/dashboard/loans", req.url));
+        // }
       }
 
       // Verifier-specific routes
       if (token.role === "verifier") {
-        if (pathname.startsWith("/admin")) {
-          return NextResponse.redirect(new URL("/verifier", req.url));
-        }
-        if (pathname.startsWith("/dashboard/apply-loan")) {
-          return NextResponse.redirect(new URL("/verifier", req.url));
-        }
+        // if (pathname.startsWith("/admin")) {
+        //   return NextResponse.redirect(new URL("/verifier", req.url));
+        // }
+        // if (pathname.startsWith("/dashboard/apply-loan")) {
+        //   return NextResponse.redirect(new URL("/verifier", req.url));
+        // }
       }
 
       // Admin-specific routes
       if (token.role === "admin") {
-        if (pathname.startsWith("/dashboard")) {
-          return NextResponse.redirect(new URL("/admin", req.url));
-        }
+        // if (pathname.startsWith("/dashboard")) {
+        //   return NextResponse.redirect(new URL("/admin", req.url));
+        // }
       }
     }
 

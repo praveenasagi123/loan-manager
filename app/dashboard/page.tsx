@@ -1,28 +1,39 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Search, Filter } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
-const loans = [
-  {
-    name: "John Okoh",
-    amount: "50,000.00",
-    date: "June 09, 2021",
-    time: "6:30 PM",
-    status: "PENDING",
-    statusColor: "bg-yellow-400",
-  },
-  {
-    name: "John Okoh",
-    amount: "100,000.00",
-    date: "June 07, 2021",
-    time: "6:30 PM",
-    status: "VERIFIED",
-    statusColor: "bg-green-500",
-  },
-];
+export default function Dashboard() {
+  const { data: session } = useSession();
+  const [loans, setLoans] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default function LoanDashboard() {
+  useEffect(() => {
+    async function fetchLoans() {
+      if (!session?.user?.id) return;
+
+      try {
+        const response = await fetch("/api/loans");
+        const result = await response.json();
+
+        if (result.success) {
+          setLoans(result.loans);
+        } else {
+          console.error("Error fetching loans:", result.error);
+        }
+      } catch (error) {
+        console.error("Failed to fetch loans:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchLoans();
+  }, [session?.user?.id]);
+
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
@@ -38,6 +49,7 @@ export default function LoanDashboard() {
           Get A Loan
         </Link>
       </div>
+
       <div className="bg-gray-100 p-2 rounded-lg flex">
         <button className="flex-1 px-4 py-2 bg-green-200 text-green-900 rounded-l-lg">
           Borrow Cash
@@ -47,6 +59,7 @@ export default function LoanDashboard() {
           Deposit Cash
         </button>
       </div>
+
       <div className="mt-4 flex items-center bg-gray-100 p-2 rounded-lg">
         <Search className="w-5 h-5 text-gray-500" />
         <input
@@ -55,7 +68,14 @@ export default function LoanDashboard() {
           className="w-full bg-transparent outline-none px-2"
         />
       </div>
-      <LoanTable loans={loans} />
+
+      {loading ? (
+        <p className="mt-4 text-center text-gray-600">Loading loans...</p>
+      ) : loans.length > 0 ? (
+        <LoanTable loans={loans} />
+      ) : (
+        <p className="mt-4 text-center text-gray-600">No loans found.</p>
+      )}
     </div>
   );
 }
@@ -66,36 +86,43 @@ function LoanTable({ loans }: { loans: any[] }) {
       <div className="flex justify-between items-center border-b pb-2 mb-2">
         <h2 className="text-lg font-semibold">Applied Loans</h2>
         <div className="flex space-x-4 text-gray-600">
-          {/* <Sort className="w-5 h-5 cursor-pointer" /> */}
           <Filter className="w-5 h-5 cursor-pointer" />
         </div>
       </div>
+
       <div className="space-y-4">
-        {loans.map((loan: any) => (
+        {loans.map((loan: any, index: number) => (
           <div
-            key={loan.id}
+            key={index}
             className="flex justify-between items-center p-3 border rounded-lg"
           >
             <div className="flex items-center space-x-3">
-              <img
-                src="https://via.placeholder.com/40"
+              <Image
+                src="https://i.pravatar.cc/150?img=3"
                 alt="User"
-                className="w-10 h-10 rounded-full"
+                className="rounded-full"
+                width={40}
+                height={40}
               />
               <div>
-                <p className="font-semibold">{loan.name}</p>
-                <p className="text-sm text-gray-500">Updated 1 day ago</p>
+                <p className="font-semibold">{loan.fullName}</p>
+                <p className="text-sm text-gray-500">
+                  Applied on {new Date(loan.appliedDate).toLocaleDateString()}
+                </p>
               </div>
             </div>
-            <p className="text-gray-800">₦ {loan.amount}</p>
+            <p className="text-gray-800">₦ {loan.amount.toLocaleString()}</p>
             <div>
-              <p className="text-gray-700">{loan.date}</p>
-              <p className="text-gray-500 text-sm">{loan.time}</p>
+              <p className="text-gray-700">
+                {new Date(loan.appliedDate).toDateString()}
+              </p>
             </div>
             <span
-              className={`px-3 py-1 text-white text-sm rounded-full ${loan.statusColor}`}
+              className={`px-3 py-1 text-white text-sm rounded-full ${
+                loan.status === "pending" ? "bg-yellow-400" : "bg-green-500"
+              }`}
             >
-              {loan.status}
+              {loan.status || "pending"}
             </span>
           </div>
         ))}
