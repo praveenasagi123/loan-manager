@@ -4,10 +4,9 @@ import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/db";
 import LoanModel from "@/models/Loan";
 
-export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export const dynamicParams = true;
+
+export async function PUT(req: NextRequest, { params }: { params: any }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id || session.user.role !== "admin") {
@@ -18,7 +17,7 @@ export async function PUT(
     }
 
     await connectToDatabase();
-    const loanId = context.params.id;
+    const loanId = params.id;
 
     const updatedLoan = await LoanModel.findOneAndUpdate(
       { _id: loanId, status: "verified" },
@@ -28,7 +27,7 @@ export async function PUT(
 
     if (!updatedLoan) {
       return NextResponse.json(
-        { success: false, error: "Loan not found" },
+        { success: false, error: "Loan not found or not verified" },
         { status: 404 }
       );
     }

@@ -14,8 +14,11 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (session?.user?.role !== "user") {
-      router.replace("/home");
+    if (session?.user?.role === "verifier") {
+      router.replace("/verifier-dashboard");
+    }
+    if (session?.user?.role === "admin") {
+      router.replace("/admin-dashboard");
     }
     async function fetchLoans() {
       if (!session?.user?.id) return;
