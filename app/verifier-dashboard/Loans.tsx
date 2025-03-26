@@ -25,27 +25,6 @@ export default function Loans() {
     fetchLoans();
   }, []);
 
-  const approveLoan = async (loanId: string) => {
-    try {
-      const response = await fetch(`/api/loans/verify/${loanId}`, {
-        method: "PUT",
-      });
-
-      const result = await response.json();
-      if (result.success) {
-        setLoans((prevLoans) =>
-          prevLoans.map((loan) =>
-            loan._id === loanId ? { ...loan, status: "approved" } : loan
-          )
-        );
-      } else {
-        console.error("Error verifying loan:", result.error);
-      }
-    } catch (error) {
-      console.error("Failed to verify loan:", error);
-    }
-  };
-
   const verifyLoan = async (loanId: string) => {
     try {
       const response = await fetch(`/api/loans/verify/${loanId}`, {
@@ -103,14 +82,6 @@ export default function Loans() {
                   </span>
                 </td>
                 <td className="p-2">
-                  {status === "verified" && (
-                    <button
-                      onClick={() => approveLoan(_id)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded text-sm cursor-pointer"
-                    >
-                      Approve
-                    </button>
-                  )}
                   {status === "pending" && (
                     <button
                       onClick={() => verifyLoan(_id)}
