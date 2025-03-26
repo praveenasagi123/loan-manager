@@ -1,17 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/db";
 import LoanModel from "@/models/Loan";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    await connectToDatabase();
-    const loanId = params.id;
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id || session.user.role !== "admin") {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
+    }
 
-    const updatedLoan = await LoanModel.findByIdAndUpdate(
-      loanId,
+    await connectToDatabase();
+    const loanId = context.params.id;
+
+    const updatedLoan = await LoanModel.findOneAndUpdate(
+      { _id: loanId, status: "verified" },
       { status: "approved" },
       { new: true }
     );
