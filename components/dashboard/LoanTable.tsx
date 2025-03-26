@@ -1,4 +1,4 @@
-import Badge from '@/components/ui/Badge';
+import Badge from "@/components/ui/Badge";
 
 export default function LoanTable({ loans }: { loans: any[] }) {
   return (
@@ -6,10 +6,18 @@ export default function LoanTable({ loans }: { loans: any[] }) {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Loan Officer</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date Applied</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Loan Officer
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Amount
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Date Applied
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Status
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
@@ -35,10 +43,10 @@ export default function LoanTable({ loans }: { loans: any[] }) {
           ))}
         </tbody>
       </table>
-      
+
       <div className="px-6 py-3 flex items-center justify-between border-t border-gray-200">
         <div className="text-sm text-gray-500">
-          Rows per page: 
+          Rows per page:
           <select className="ml-2 border rounded px-2 py-1">
             <option>7</option>
             <option>15</option>

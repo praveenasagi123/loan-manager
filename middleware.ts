@@ -19,7 +19,7 @@ export default withAuth(
         if (pathname.startsWith("/admin") || pathname.startsWith("/verifier")) {
           return NextResponse.redirect(new URL("/dashboard/loans", req.url));
         }
-        
+
         // Ensure user stays within dashboard routes
         if (!pathname.startsWith("/dashboard")) {
           return NextResponse.redirect(new URL("/dashboard/loans", req.url));

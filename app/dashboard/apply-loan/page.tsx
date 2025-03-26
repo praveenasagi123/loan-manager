@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { applyForLoan } from '@/lib/actions/loan';
-import { useSession } from 'next-auth/react';
+import { useRouter } from "next/navigation";
+import { applyForLoan } from "@/lib/actions/loan";
+import { useSession } from "next-auth/react";
 
 export default function ApplyLoanPage() {
   const router = useRouter();
@@ -11,10 +11,10 @@ export default function ApplyLoanPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const amount = parseFloat(formData.get('amount') as string);
-    
+    const amount = parseFloat(formData.get("amount") as string);
+
     await applyForLoan(session?.user?.id, amount);
-    router.push('/dashboard/loans');
+    router.push("/dashboard/loans");
   };
 
   return (

@@ -1,8 +1,8 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Sidebar() {
   return (
-    <div className="w-64 bg-gray-800 text-white p-4 h-screen fixed">
+    <div className="w-64 bg-gray-800 text-white p-4 h-screen">
       <h1 className="text-xl font-bold mb-8">CREDIT APP</h1>
       <nav>
         <ul className="space-y-2">

@@ -1,18 +1,23 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useNotification } from "../components/Notification";
 import Link from "next/link";
-import Homepage from "../Homepage/page";
-
 
 export default function Login() {
+  const { data, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { showNotification } = useNotification();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [status, router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +31,7 @@ export default function Login() {
       showNotification(result.error, "error");
     } else {
       showNotification("Login successful!", "success");
-      router.push("/Homepage");
+      router.push("/dashboard");
     }
   };
 
@@ -60,12 +65,7 @@ export default function Login() {
             className="w-full px-3 py-2 border rounded"
           />
         </div>
-        <button
-          type="submit"
-          //   onClick={() => router.push("/Home")}
-        >
-          Login
-        </button>
+        <button type="submit">Login</button>
         <p className="text-center mt-4">
           Don&apos;t have an account?{" "}
           <Link href="/register" className="text-blue-500 hover:text-blue-600">

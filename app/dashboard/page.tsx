@@ -1,10 +1,14 @@
-import { getUserLoans } from '@/lib/actions/loan';
-import LoanTable from '@/components/dashboard/LoanTable';
-import { auth } from '@/auth';
+"use client";
 
-export default async function LoansPage() {
-  const session = await auth();
-  const loans = await getUserLoans(session?.user?.id);
+import { getUserLoans } from "@/lib/actions/loan";
+import LoanTable from "@/components/dashboard/LoanTable";
+import { useSession } from "next-auth/react";
+
+export default function UserDashboard() {
+  const { data: session } = useSession();
+  // const loans = session?.user?.id ? getUserLoans(session.user.id) : [];
+
+  const loans: any[] = [];
 
   return (
     <div>
