@@ -1,4 +1,4 @@
-import Sidebar from "@/components/dashboard/Sidebar";
+import UserNavbar from "@/app/components/UserNavbar";
 
 export default function DashboardLayout({
   children,
@@ -6,9 +6,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex gap-6 min-h-screen">
-      <Sidebar />
-      <main className="flex-1 bg-gray-50">{children}</main>
-    </div>
+    // <div className="min-h-screen">
+    // {/* <UserNavbar /> */}
+    <main className="flex-1 bg-gray-50">{children}</main>
+    // </div>
   );
 }
